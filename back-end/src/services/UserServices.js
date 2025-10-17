@@ -17,7 +17,7 @@ export const updateUser = async (id, updateData) => {
   if (!user) return null;
   await user.update(updateData);
   return user;
-}; 
+};
 
 export const deleteUser = async (id) => {
   const user = await User.findByPk(id);
@@ -29,4 +29,3 @@ export const deleteUser = async (id) => {
 export const findUserByUsername = async (username) => {
   return await User.findOne({ where: { Username: username } });
 }; 
-

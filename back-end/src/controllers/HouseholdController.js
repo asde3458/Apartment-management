@@ -4,9 +4,9 @@ import * as householdService from '../services/HouseholdServices.js';
 export const getAllHouseholds = async (req, res) => {
   try {
     const households = await householdService.getAllHouseholds();
-    res.status(200).json({error: false, households});
+    res.status(200).json(households);
   } catch (error) {
-    res.status(500).json({ error: true, message: 'Error retrieving households', error });
+    res.status(500).json({ message: 'Error retrieving households', error });
   }
 };
 
@@ -14,25 +14,25 @@ export const getAllHouseholds = async (req, res) => {
 export const getHouseholdById = async (req, res) => {
   try {
     const household = await householdService.getHouseholdById(req.params.id);
-    if (!household) return res.status(404).json({  error: true, message: 'Household not found' });
+    if (!household) return res.status(404).json({ message: 'Household not found' });
     res.status(200).json(household);
   } catch (error) {
-    res.status(500).json({ error: false, message: 'Error retrieving household', error });
+    res.status(500).json({ message: 'Error retrieving household', error });
   }
 };
 
 // Thêm hộ gia đình mới
 export const createHousehold = async (req, res) => {
   try {
-    const { RoomNumber, Type, HouseholdHead, Members, Notes } = req.body;
-    if (!RoomNumber || !Type || !Members || !HouseholdHead) {
-      return res.status(400).json({ message: 'RoomNumber, Type, HousehouseHead and Members are required' });
+    const { RoomNumber, Type, Members, Notes } = req.body;
+    if (!RoomNumber || !Type || !Members) {
+      return res.status(400).json({ message: 'RoomNumber, Type and Members are required' });
     }
 
-    const newHousehold = await householdService.createHousehold({RoomNumber, Type, HouseholdHead, Members, Notes});
-    res.status(201).json({ error: false, newHousehold} );
+    const newHousehold = await householdService.createHousehold({RoomNumber, Type, Members, Notes});
+    res.status(201).json(newHousehold);
   } catch (error) {
-    res.status(500).json({ error: true, message: 'Error creating household', error });
+    res.status(500).json({ message: 'Error creating household', error });
   }
 };
 
@@ -40,10 +40,10 @@ export const createHousehold = async (req, res) => {
 export const updateHousehold = async (req, res) => {
   try {
     const updatedHousehold = await householdService.updateHousehold(req.params.id, req.body);
-    if (!updatedHousehold) return res.status(404).json({ error: true, message: 'Household not found' });
-    res.status(200).json({ error: false, message: "Update successfully", updatedHousehold });
+    if (!updatedHousehold) return res.status(404).json({ message: 'Household not found' });
+    res.status(200).json(updatedHousehold);
   } catch (error) {
-    res.status(500).json({ error: true, message: 'Error updating household', error });
+    res.status(500).json({ message: 'Error updating household', error });
   }
 };
 
@@ -61,16 +61,10 @@ export const deleteHousehold = async (req, res) => {
 // Tìm hộ gia đình theo số phòng
 export const findHouseholdByRoomNumber = async (req, res) => {
   try {
-    const roomNumber = req.body.roomNumber || req.query.roomNumber;
-    if (!roomNumber) {
-      return res.status(400).json({ error: true, message: 'roomNumber is required' });
-    }
-    const household = await householdService.findHouseholdByRoomNumber(roomNumber);
-    if (!household)
-      return res.status(404).json({ error: true, message: 'Household not found' });
+    const household = await householdService.findHouseholdByRoomNumber(req.params.roomNumber);
+    if (!household) return res.status(404).json({ message: 'Household not found' });
     res.status(200).json(household);
   } catch (error) {
-    res.status(500).json({ error: true, message: 'Error finding household', error });
+    res.status(500).json({ message: 'Error finding household', error });
   }
 };
-

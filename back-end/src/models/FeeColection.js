@@ -10,7 +10,6 @@ const FeeCollection = sequelize.define("FeeCollection", {
   },
   FeeTypeID: { 
     type: DataTypes.INTEGER, 
-    allowNull: false,
     references: { model: FeeType, key: "FeeTypeID" } 
   },
   CollectionName: { 
@@ -26,7 +25,7 @@ const FeeCollection = sequelize.define("FeeCollection", {
   },
   TotalAmount: { 
     type: DataTypes.DECIMAL(15, 2), 
-    allowNull: true
+    allowNull: false 
   },
   Status: { 
     type: DataTypes.ENUM('Đang thu', 'Hoàn thành', 'Kết thúc'), 

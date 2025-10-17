@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/dbsetup.js";
-import FeeCollection from "./FeeCollection.js";
+import FeeCollection from "./FeeColection.js";
 import Household from "./Household.js";
 
 const FeeDetail = sequelize.define("FeeDetail", {
@@ -17,9 +17,13 @@ const FeeDetail = sequelize.define("FeeDetail", {
     type: DataTypes.INTEGER, 
     references: { model: Household, key: "HouseholdID" } 
   },
-  Amount: { 
+  AmountDue: { 
     type: DataTypes.DECIMAL(10, 2), 
-    allowNull: true
+    allowNull: false 
+  },
+  AmountPaid: { 
+    type: DataTypes.DECIMAL(10, 2), 
+    defaultValue: 0 
   },
   PaymentDate: { 
     type: DataTypes.DATEONLY 
@@ -32,6 +36,9 @@ const FeeDetail = sequelize.define("FeeDetail", {
     type: DataTypes.ENUM('Chưa đóng', 'Đã đóng'), 
     allowNull: false 
   },
+  Notes: { 
+    type: DataTypes.TEXT 
+  }
 }, {
   tableName: "FeeDetails",
   timestamps: false
